@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPilgrim - Temple Crowd Management System | Government of Gujarat</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="top-bar-left">
+                <a href="#">Skip to Main Content</a>
+                <a href="#">Screen Reader Access</a>
+                <a href="#">Font Size: A- | A | A+</a>
+            </div>
+            <div>
+                <a href="#">हिंदी</a>
+                <a href="#">ગુજરાતી</a>
+                <a href="#">English</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Government Header -->
+    <header class="gov-header">
+        <div class="gov-header-content">
+            <div class="gov-logo-section">
+                <div class="emblem"></div>
+                <div class="gov-titles">
+                    <h1>Government of Gujarat</h1>
+                    <h2>SmartPilgrim - Temple Crowd Management System</h2>
+                    <div class="hindi">स्मार्ट तीर्थ - मंदिर भीड़ प्रबंधन प्रणाली</div>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 0.9rem; color: #666;">Developed by</div>
+                <div style="font-weight: bold;">GUJCOST, Dept. of Science & Technology</div>
+                <div style="font-size: 0.85rem; color: #666;">Last Updated: <span id="lastUpdate">21/09/2025 10:45 AM</span></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li>
+                    <a href="#home">🏠 Home</a>
+                </li>
+                <li>
+                    <a href="#temples">⛩️ Temples</a>
+                    <ul class="dropdown">
+                        <li><a href="#">Somnath Temple</a></li>
+                        <li><a href="#">Dwarka Temple</a></li>
+                        <li><a href="#">Ambaji Temple</a></li>
+                        <li><a href="#">Pavagadh Temple</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#booking">🎫 E-Darshan Booking</a>
+                </li>
+                <li>
+                    <a href="#crowd">📊 Live Crowd Status</a>
+                </li>
+                <li>
+                    <a href="#parking">🚗 Parking Info</a>
+                </li>
+                <li>
+                    <a href="#facilities">🏥 Facilities</a>
+                    <ul class="dropdown">
+                        <li><a href="#">Medical Centers</a></li>
+                        <li><a href="#">Rest Rooms</a></li>
+                        <li><a href="#">Food Courts</a></li>
+                        <li><a href="#">Cloak Rooms</a></li>
+                        <li><a href="#">Special Assistance</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#emergency">🚨 Emergency</a>
+                </li>
+                <li>
+                    <a href="#feedback">📝 Feedback</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Ticker -->
+    <div class="ticker-wrap">
+        
+        <div class="ticker">
+            <span class="ticker-item">Special Darshan on Ekadashi from 4:00 AM</span>
+            <span class="ticker-item">Free shuttle service from Railway Station every 15 minutes</span>
+            <span class="ticker-item">Online booking mandatory for VIP darshan</span>
+            <span class="ticker-item">Parking Lot B closed for maintenance on 25th Sept</span>
+            <span class="ticker-item">New mobile app launched - Download from Play Store</span>
+            <span class="ticker-item">Special Darshan on Ekadashi from 4:00 AM</span>
+            <span class="ticker-item">Free shuttle service from Railway Station every 15 minutes</span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="dashboard-grid">
+            <!-- Left Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">Quick Links</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#" onclick="showDashboard()">Dashboard</a></li>
+                    <li><a href="#" onclick="showBooking()">Book E-Darshan</a></li>
+                    <li><a href="#" onclick="showCrowdMap()">Live Crowd Map</a></li>
+                    <li><a href="#" onclick="showQueueStatus()">Queue Status</a></li>
+                    <li><a href="#" onclick="showParking()">Parking Availability</a></li>
+                    <li><a href="#" onclick="showDonation()">Online Donation</a></li>
+                    <li><a href="#" onclick="showComplaints()">Lodge Complaint</a></li>
+                    <li><a href="#" onclick="showHistory()">Booking History</a></li>
+                    <li><a href="#" onclick="showGuidelines()">Visitor Guidelines</a></li>
+                    <li><a href="#" onclick="showDownloads()">Downloads</a></li>
+                    <li><a href="#" onclick="showHelp()">Help & Support</a></li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Statistics Overview -->
+                <h3 style="color: var(--gov-blue); margin-bottom: 20px;">📊 Live Statistics Dashboard</h3>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Current Devotees</div>
+                        <div class="stat-number" id="currentCount">15,234</div>
+                        <div class="stat-change stat-up">↑ 12% from yesterday</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-label">Average Wait Time</div>
+                        <div class="stat-number" style="color: var(--gov-orange);">45 min</div>
+                        <div class="stat-change stat-down">↓ 15 min from morning</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-label">Today's Footfall</div>
+                        <div class="stat-number" style="color: var(--gov-green);">48,762</div>
+                        <div class="stat-change">Expected: 75,000</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-label">Parking Available</div>
+                        <div class="stat-number" style="color: var(--gov-red);">127</div>
+                        <div class="stat-change">Out of 2,500 spots</div>
+                    </div>
+                </div>
+
+                <!-- Tabs Section -->
+                <div class="tabs">
+                    <div class="tab-headers">
+                        <button class="tab-header active" onclick="showTab('booking-tab')">E-Darshan Booking</button>
+                        <button class="tab-header" onclick="showTab('crowd-tab')">Crowd Density Map</button>
+                        <button class="tab-header" onclick="showTab('queue-tab')">Queue Management</button>
+                        <button class="tab-header" onclick="showTab('parking-tab')">Parking Status</button>
+                        <button class="tab-header" onclick="showTab('alerts-tab')">Alerts & Advisory</button>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <!-- Booking Tab -->
+                        <div id="booking-tab" class="tab-pane active">
+                            <div class="gov-form">
+                                <div class="form-header">E-Darshan Token Booking Form</div>
+                                
+                                <form onsubmit="submitBooking(event)">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Select Temple <span class="required">*</span></label>
+                                            <select class="form-control" required>
+                                                <option value="">-- Select Temple --</option>
+                                                <option>Somnath Temple</option>
+                                                <option>Dwarka Temple</option>
+                                                <option>Ambaji Temple</option>
+                                                <option>Pavagadh Temple</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Darshan Type <span class="required">*</span></label>
+                                            <select class="form-control" required>
+                                                <option value="">-- Select Type --</option>
+                                                <option>General Darshan (Free)</option>
+                                                <option>Special Darshan (₹100)</option>
+                                                <option>VIP Darshan (₹500)</option>
+                                                <option>Senior Citizen (Free)</option>
+                                                <option>Divyang (Free)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Preferred Date <span class="required">*</span></label>
+                                            <input type="date" class="form-control" required>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Time Slot <span class="required">*</span></label>
+                                            <select class="form-control" required>
+                                                <option value="">-- Select Time Slot --</option>
+                                                <option>05:00 AM - 06:00 AM (Available: 150)</option>
+                                                <option>06:00 AM - 07:00 AM (Available: 200)</option>
+                                                <option>07:00 AM - 08:00 AM (Available: 100)</option>
+                                                <option>08:00 AM - 09:00 AM (Available: 50)</option>
+                                                <option>09:00 AM - 10:00 AM (Fully Booked)</option>
+                                                <option>10:00 AM - 11:00 AM (Available: 75)</option>
+                                                <option>11:00 AM - 12:00 PM (Available: 125)</option>
+                                                <option>04:00 PM - 05:00 PM (Available: 180)</option>
+                                                <option>05:00 PM - 06:00 PM (Available: 90)</option>
+                                                <option>06:00 PM - 07:00 PM (Available: 40)</option>
+                                                <option>07:00 PM - 08:00 PM (Available: 200)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Full Name <span class="required">*</span></label>
+                                            <input type="text" class="form-control" required>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Mobile Number <span class="required">*</span></label>
+                                            <input type="tel" class="form-control" pattern="[0-9]{10}" required>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Email ID</label>
+                                            <input type="email" class="form-control">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Number of Devotees <span class="required">*</span></label>
+                                            <input type="number" min="1" max="10" value="1" class="form-control" required>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>ID Proof Type <span class="required">*</span></label>
+                                            <select class="form-control" required>
+                                                <option value="">-- Select ID --</option>
+                                                <option>Aadhaar Card</option>
+                                                <option>PAN Card</option>
+                                                <option>Voter ID</option>
+                                                <option>Passport</option>
+                                                <option>Driving License</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>ID Number <span class="required">*</span></label>
+                                            <input type="text" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                                        <button type="submit" class="btn btn-primary">Submit Booking</button>
+                                        <button type="reset" class="btn btn-warning">Reset Form</button>
+                                        <button type="button" class="btn btn-success" onclick="checkStatus()">Check Booking Status</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Crowd Density Tab -->
+                        <div id="crowd-tab" class="tab-pane">
+                            <div class="density-map">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                    <h3>Real-time Crowd Density Heatmap</h3>
+                                    <div class="live-indicator">
+                                        <span class="live-dot"></span>
+                                        LIVE
+                                    </div>
+                                </div>
+                                
+                                <div class="map-grid">
+                                    <div class="zone-block zone-green">
+                                        <strong>Entry Gate 1</strong>
+                                        <div>~250 people</div>
+                                        <small>Low Density</small>
+                                    </div>
+                                    <div class="zone-block zone-yellow">
+                                        <strong>Security Check</strong>
+                                        <div>~800 people</div>
+                                        <small>Moderate</small>
+                                    </div>
+                                    <div class="zone-block zone-red">
+                                        <strong>Main Queue</strong>
+                                        <div>~2500 people</div>
+                                        <small>High Density</small>
+                                    </div>
+                                    <div class="zone-block zone-orange">
+                                        <strong>Sanctum Entry</strong>
+                                        <div>~1500 people</div>
+                                        <small>Moderate-High</small>
+                                    </div>
+                                    <div class="zone-block zone-red">
+                                        <strong>Main Sanctum</strong>
+                                        <div>~3000 people</div>
+                                        <small>Very High</small>
+                                    </div>
+                                    <div class="zone-block zone-yellow">
+                                        <strong>Prasad Counter</strong>
+                                        <div>~600 people</div>
+                                        <small>Moderate</small>
+                                    </div>
+                                    <div class="zone-block zone-green">
+                                        <strong>Exit Gate 1</strong>
+                                        <div>~200 people</div>
+                                        <small>Low Density</small>
+                                    </div>
+                                    <div class="zone-block zone-green">
+                                        <strong>Exit Gate 2</strong>
+                                        <div>~150 people</div>
+                                        <small>Low Density</small>
+                                    </div>
+                                    <div class="zone-block zone-orange">
+                                        <strong>Parking Lot A</strong>
+                                        <div>85% Full</div>
+                                        <small>Limited Space</small>
+                                    </div>
+                                    <div class="zone-block zone-red">
+                                        <strong>Parking Lot B</strong>
+                                        <div>95% Full</div>
+                                        <small>Almost Full</small>
+                                    </div>
+                                    <div class="zone-block zone-yellow">
+                                        <strong>Food Court</strong>
+                                        <div>~400 people</div>
+                                        <small>Moderate</small>
+                                    </div>
+                                    <div class="zone-block zone-green">
+                                        <strong>Rest Area</strong>
+                                        <div>~100 people</div>
+                                        <small>Low Density</small>
+                                    </div>
+                                </div>
+                                
+                                <div style="background: #f5f5f5; padding: 15px; margin-top: 20px; border: 1px solid var(--gov-border);">
+                                    <strong>AI Predictions for Next 2 Hours:</strong>
+                                    <ul style="margin: 10px 0 0 20px;">
+                                        <li>Expected 25% increase in crowd by 12:00 PM</li>
+                                        <li>Parking Lot B likely to be full in 30 minutes</li>
+                                        <li>Recommended to open Emergency Gate 3 by 11:30 AM</li>
+                                        <li>Deploy additional security at Main Queue area</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Queue Management Tab -->
+                        <div id="queue-tab" class="tab-pane">
+                            <div class="token-display">
+                                <div style="font-size: 1.2rem;">Current Token Being Served</div>
+                                <div class="current-token">A-1847</div>
+                                <div class="token-info">
+                                    <div>
+                                        <div style="font-size: 0.9rem; opacity: 0.8;">Your Token</div>
+                                        <div style="font-size: 1.5rem; font-weight: bold;">A-2015</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.9rem; opacity: 0.8;">Estimated Time</div>
+                                        <div style="font-size: 1.5rem; font-weight: bold;">45 min</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.9rem; opacity: 0.8;">Tokens Ahead</div>
+                                        <div style="font-size: 1.5rem; font-weight: bold;">168</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h4 style="margin: 20px 0;">Queue Statistics</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Queue Type</th>
+                                        <th>Current Token</th>
+                                        <th>Last Token</th>
+                                        <th>Avg. Wait Time</th>
+                                        <th>People Waiting</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>General Darshan</td>
+                                        <td>A-1847</td>
+                                        <td>A-3500</td>
+                                        <td>45 min</td>
+                                        <td>1,653</td>
+                                        <td><span style="color: var(--gov-orange);">Moderate</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Special Darshan</td>
+                                        <td>B-425</td>
+                                        <td>B-800</td>
+                                        <td>20 min</td>
+                                        <td>375</td>
+                                        <td><span style="color: var(--gov-green);">Fast Moving</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>VIP Darshan</td>
+                                        <td>V-85</td>
+                                        <td>V-150</td>
+                                        <td>10 min</td>
+                                        <td>65</td>
+                                        <td><span style="color: var(--gov-green);">Quick</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Senior Citizen</td>
+                                        <td>S-210</td>
+                                        <td>S-400</td>
+                                        <td>25 min</td>
+                                        <td>190</td>
+                                        <td><span style="color: var(--gov-green);">Priority</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Divyang</td>
+                                        <td>D-45</td>
+                                        <td>D-100</td>
+                                        <td>15 min</td>
+                                        <td>55</td>
+                                        <td><span style="color: var(--gov-green);">Priority</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Parking Tab -->
+                        <div id="parking-tab" class="tab-pane">
+                            <h4>🚗 Real-time Parking Availability</h4>
+                            
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin: 20px 0;">
+                                <div style="background: #f9f9f9; border: 1px solid var(--gov-border); padding: 15px;">
+                                    <h5>Parking Lot A (Main Gate)</h5>
+                                    <div style="margin: 10px 0;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Total Capacity:</span>
+                                            <strong>1000</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Occupied:</span>
+                                            <strong style="color: var(--gov-red);">850</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Available:</span>
+                                            <strong style="color: var(--gov-green);">150</strong>
+                                        </div>
+                                        <div style="background: #e0e0e0; height: 20px; margin: 10px 0; position: relative;">
+                                            <div style="background: var(--gov-red); height: 100%; width: 85%;"></div>
+                                        </div>
+                                        <small>Rate: ₹20/hour | Distance: 500m</small>
+                                    </div>
+                                </div>
+                                
+                                <div style="background: #f9f9f9; border: 1px solid var(--gov-border); padding: 15px;">
+                                    <h5>Parking Lot B (East Gate)</h5>
+                                    <div style="margin: 10px 0;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Total Capacity:</span>
+                                            <strong>800</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Occupied:</span>
+                                            <strong style="color: var(--gov-red);">760</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Available:</span>
+                                            <strong style="color: var(--gov-orange);">40</strong>
+                                        </div>
+                                        <div style="background: #e0e0e0; height: 20px; margin: 10px 0; position: relative;">
+                                            <div style="background: var(--gov-red); height: 100%; width: 95%;"></div>
+                                        </div>
+                                        <small>Rate: ₹15/hour | Distance: 800m</small>
+                                    </div>
+                                </div>
+                                
+                                <div style="background: #f9f9f9; border: 1px solid var(--gov-border); padding: 15px;">
+                                    <h5>Parking Lot C (South)</h5>
+                                    <div style="margin: 10px 0;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Total Capacity:</span>
+                                            <strong>500</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Occupied:</span>
+                                            <strong style="color: var(--gov-orange);">300</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Available:</span>
+                                            <strong style="color: var(--gov-green);">200</strong>
+                                        </div>
+                                        <div style="background: #e0e0e0; height: 20px; margin: 10px 0; position: relative;">
+                                            <div style="background: var(--gov-orange); height: 100%; width: 60%;"></div>
+                                        </div>
+                                        <small>Rate: ₹10/hour | Distance: 1.2km</small>
+                                    </div>
+                                </div>
+                                
+                                <div style="background: #f9f9f9; border: 1px solid var(--gov-border); padding: 15px;">
+                                    <h5>VIP Parking</h5>
+                                    <div style="margin: 10px 0;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Total Capacity:</span>
+                                            <strong>200</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Occupied:</span>
+                                            <strong style="color: var(--gov-green);">80</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Available:</span>
+                                            <strong style="color: var(--gov-green);">120</strong>
+                                        </div>
+                                        <div style="background: #e0e0e0; height: 20px; margin: 10px 0; position: relative;">
+                                            <div style="background: var(--gov-green); height: 100%; width: 40%;"></div>
+                                        </div>
+                                        <small>Rate: ₹50/hour | Distance: 100m</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <strong>ℹ️ Shuttle Service:</strong> Free shuttle buses available from all parking lots to temple main gate. Frequency: Every 10 minutes. Special wheelchair accessible vehicles available on request.
+                            </div>
+                        </div>
+                        
+                        <!-- Alerts Tab -->
+                        <div id="alerts-tab" class="tab-pane">
+                            <h4>📢 Important Alerts & Advisories</h4>
+                            
+                            <div class="alert alert-danger">
+                                <strong>🚨 URGENT:</strong> Heavy rush expected this weekend due to Ekadashi. Please book your slots in advance to avoid inconvenience.
+                            </div>
+                            
+                            <div class="alert alert-warning">
+                                <strong>⚠️ TRAFFIC ADVISORY:</strong> Main approach road will be closed for VIP movement from 10:00 AM to 11:00 AM tomorrow. Use alternate routes.
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <strong>ℹ️ SPECIAL DARSHAN:</strong> Mangla Aarti at 4:30 AM. Limited slots available. Book now through our portal.
+                            </div>
+                            
+                            <div class="alert alert-success">
+                                <strong>✅ NEW FACILITY:</strong> Digital locker rooms now available at Gate 2. Store your belongings safely. Charges: ₹30 for 4 hours.
+                            </div>
+                            
+                            <div class="alert alert-warning">
+                                <strong>⚠️ WEATHER UPDATE:</strong> Light rain expected in evening. Devotees are advised to carry umbrellas. Temporary shelter available at all gates.
+                            </div>
+                            
+                            <h4 style="margin-top: 30px;">📋 Guidelines for Devotees</h4>
+                            <ol style="margin-left: 20px; line-height: 1.8;">
+                                <li>Carry valid ID proof matching your booking details</li>
+                                <li>Arrive 30 minutes before your scheduled slot</li>
+                                <li>Mobile phones allowed but keep on silent mode</li>
+                                <li>Photography prohibited inside main sanctum</li>
+                                <li>Dress code: Traditional/Decent clothing mandatory</li>
+                                <li>Prasad distribution at designated counters only</li>
+                                <li>Follow COVID-19 protocols - Masks recommended in crowded areas</li>
+                                <li>Senior citizens and Divyang persons get priority access</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Services -->
+                <div style="background: #fff3e0; border: 2px solid var(--gov-orange); padding: 15px; margin: 20px 0; border-radius: 5px;">
+                    <h4 style="color: var(--gov-red);">🚨 Emergency Services</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div>
+                            <strong>🏥 Medical Emergency:</strong><br>
+                            📞 108 (Ambulance)<br>
+                            Temple Dispensary: 02876-XXXXX
+                        </div>
+                        <div>
+                            <strong>👮 Security/Police:</strong><br>
+                            📞 100 (Police)<br>
+                            Control Room: 02876-XXXXX
+                        </div>
+                        <div>
+                            <strong>🔥 Fire Emergency:</strong><br>
+                            📞 101 (Fire Brigade)<br>
+                            Temple Safety: 02876-XXXXX
+                        </div>
+                        <div>
+                            <strong>📞 Temple Helpline:</strong><br>
+                            Toll Free: 1800-XXX-XXXX<br>
+                            WhatsApp: 98765-XXXXX
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <!-- Live Updates Widget -->
+                <div class="widget">
+                    <div class="widget-header">🔴 Live Updates</div>
+                    <div class="widget-content">
+                        <div class="live-feed">
+                            <small style="color: #666;">10:45 AM</small>
+                            <p style="margin: 5px 0;">Gate 3 opened for crowd management</p>
+                        </div>
+                        <div class="live-feed">
+                            <small style="color: #666;">10:30 AM</small>
+                            <p style="margin: 5px 0;">VIP darshan completed, normal queue resumed</p>
+                        </div>
+                        <div class="live-feed">
+                            <small style="color: #666;">10:15 AM</small>
+                            <p style="margin: 5px 0;">Medical team deployed at Queue Area 2</p>
+                        </div>
+                        <div class="live-feed">
+                            <small style="color: #666;">10:00 AM</small>
+                            <p style="margin: 5px 0;">Parking Lot A - 85% full</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Weather Widget -->
+                <div class="widget">
+                    <div class="widget-header">🌤️ Weather Today</div>
+                    <div class="widget-content">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold;">32°C</div>
+                            <div>Partly Cloudy</div>
+                            <div style="margin: 10px 0; color: #666;">
+                                <div>Humidity: 65%</div>
+                                <div>Wind: 12 km/h</div>
+                                <div>UV Index: 7 (High)</div>
+                            </div>
+                            <div style="padding: 10px; background: #e3f2fd; margin-top: 10px; border-radius: 5px;">
+                                <small>Carry water bottles. Hydration points available at all gates.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Links Widget -->
+                <div class="widget">
+                    <div class="widget-header">⚡ Quick Actions</div>
+                    <div class="widget-content">
+                        <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="downloadApp()">📱 Download Mobile App</button>
+                        <button class="btn btn-success" style="width: 100%; margin-bottom: 10px;" onclick="virtualTour()">🎥 360° Virtual Tour</button>
+                        <button class="btn btn-warning" style="width: 100%; margin-bottom: 10px;" onclick="printToken()">🖨️ Print E-Token</button>
+                        <button class="btn btn-danger" style="width: 100%;" onclick="reportIssue()">📢 Report Issue</button>
+                    </div>
+                </div>
+                
+                <!-- Facilities Status -->
+                <div class="widget">
+                    <div class="widget-header">🏛️ Facilities Status</div>
+                    <div class="widget-content">
+                        <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                            <span>🚻 Washrooms</span>
+                            <span style="color: var(--gov-green);">✓ Available</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                            <span>💧 Drinking Water</span>
+                            <span style="color: var(--gov-green);">✓ Available</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                            <span>👟 Shoe Stand</span>
+                            <span style="color: var(--gov-orange);">70% Full</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                            <span>🍽️ Food Court</span>
+                            <span style="color: var(--gov-green);">✓ Open</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                            <span>🏥 First Aid</span>
+                            <span style="color: var(--gov-green);">✓ Available</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                            <span>♿ Wheelchair</span>
+                            <span style="color: var(--gov-green);">✓ 15 Available</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+        <!-- Footer -->
+    <footer>
+        <div class="footer-top">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>About SmartPilgrim</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Mission</a></li>
+                        <li><a href="#">Temple History</a></li>
+                        <li><a href="#">Team</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">E-Darshan Booking</a></li>
+                        <li><a href="#">Crowd Status</a></li>
+                        <li><a href="#">Parking Information</a></li>
+                        <li><a href="#">Temple Timings</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Important Temples</h4>
+                    <ul>
+                        <li><a href="#">Somnath Temple</a></li>
+                        <li><a href="#">Dwarkadhish Temple</a></li>
+                        <li><a href="#">Ambaji Temple</a></li>
+                        <li><a href="#">Pavagadh Temple</a></li>
+                        <li><a href="#">Akshardham Temple</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Information</h4>
+                    <ul>
+                        <li>📞 Toll Free: 1800-XXX-XXXX</li>
+                        <li>📧 Email: info@smartpilgrim.gujarat.gov.in</li>
+                        <li>🏢 Address: GUJCOST, Sector 11, Gandhinagar, Gujarat - 382011</li>
+                        <li>🕒 Office Hours: 9:00 AM - 6:00 PM (Mon-Sat)</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">YouTube</a></li>
+                        <li><a href="#">WhatsApp Channel</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div style="max-width: 1400px; margin: 0 auto; padding: 0 20px;">
+                <p>© 2025 SmartPilgrim - Temple Crowd Management System. All Rights Reserved. | Government of Gujarat</p>
+                <p style="margin-top: 10px; font-size: 0.9rem;">
+                    <a href="#" style="color: rgba(255,255,255,0.8); margin: 0 10px;">Privacy Policy</a> | 
+                    <a href="#" style="color: rgba(255,255,255,0.8); margin: 0 10px;">Terms of Service</a> | 
+                    <a href="#" style="color: rgba(255,255,255,0.8); margin: 0 10px;">Disclaimer</a> | 
+                    <a href="#" style="color: rgba(255,255,255,0.8); margin: 0 10px;">Sitemap</a> | 
+                    <a href="#" style="color: rgba(255,255,255,0.8); margin: 0 10px;">Accessibility Statement</a>
+                </p>
+            </div>
+        </div>
+    </footer>
