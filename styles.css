@@ -91,14 +91,12 @@ body {
 .gov-logo-section {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 }
 
-.emblem {
-    width: 70px;
-    height: 70px;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23003d82"/><text x="50" y="55" text-anchor="middle" fill="white" font-size="12">GOVT OF</text><text x="50" y="70" text-anchor="middle" fill="white" font-size="10">GUJARAT</text></svg>') no-repeat center;
-    background-size: contain;
+.gov-emblem {
+    width: 60px;
+    height: auto;
 }
 
 .gov-titles h1 {
@@ -1661,3 +1659,4 @@ footer {
         transition-duration: 0.01ms !important;
     }
 }
+
