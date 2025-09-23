@@ -1,5 +1,682 @@
 // script.js - SmartPilgrim Temple Crowd Management System
 
+// ========== Multi-Language Support ==========
+const translations = {
+    en: {
+        welcome: 'Welcome to Smart Temple Management',
+        bookSlot: 'Book E-Darshan',
+        currentCrowd: 'Current Devotees',
+        emergency: 'Emergency',
+        facilities: 'Facilities'
+    },
+    hi: {
+        welcome: 'स्मार्ट मंदिर प्रबंधन में आपका स्वागत है',
+        bookSlot: 'ई-दर्शन बुक करें',
+        currentCrowd: 'वर्तमान भक्त',
+        emergency: 'आपातकाल',
+        facilities: 'सुविधाएं'
+    },
+    gu: {
+        welcome: 'સ્માર્ટ મંદિર વ્યવસ્થાપનમાં આપનું સ્વાગત છે',
+        bookSlot: 'ઈ-દર્શન બુક કરો',
+        currentCrowd: 'વર્તમાન ભક્તો',
+        emergency: 'કટોકટી',
+        facilities: 'સુવિધાઓ'
+    },
+    mr: {
+        welcome: 'स्मार्ट मंदिर व्यवस्थापनात आपले स्वागत',
+        bookSlot: 'ई-दर्शन बुक करा',
+        currentCrowd: 'सध्याचे भक्त',
+        emergency: 'आपत्कालीन',
+        facilities: 'सुविधा'
+    },
+    ta: {
+        welcome: 'ஸ்மார்ட் கோயில் நிர்வாகத்திற்கு வரவேற்கிறோம்',
+        bookSlot: 'இ-தரிசனம் பதிவு',
+        currentCrowd: 'தற்போதைய பக்தர்கள்',
+        emergency: 'அவசரநிலை',
+        facilities: 'வசதிகள்'
+    },
+    te: {
+        welcome: 'స్మార్ట్ టెంపుల్ మేనేజ్‌మెంట్‌కు స్వాగతం',
+        bookSlot: 'ఇ-దర్శనం బుక్ చేయండి',
+        currentCrowd: 'ప్రస్తుత భక్తులు',
+        emergency: 'అత్యవసర',
+        facilities: 'సౌకర్యాలు'
+    }
+};
+
+let currentLanguage = 'en';
+
+function changeLanguage(lang) {
+    currentLanguage = lang;
+    updatePageLanguage();
+    localStorage.setItem('preferredLanguage', lang);
+}
+
+function updatePageLanguage() {
+    // Update page text based on selected language
+    const elements = document.querySelectorAll('[data-translate]');
+    elements.forEach(element => {
+        const key = element.getAttribute('data-translate');
+        if (translations[currentLanguage] && translations[currentLanguage][key]) {
+            element.textContent = translations[currentLanguage][key];
+        }
+    });
+}
+
+// ========== User Authentication ==========
+let isLoggedIn = false;
+let userData = null;
+
+function showLoginModal() {
+    document.getElementById('loginModal').style.display = 'block';
+}
+
+function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+}
+
+function showLoginTab(tab) {
+    const tabs = document.querySelectorAll('.login-tab');
+    tabs.forEach(t => t.style.display = 'none');
+    document.getElementById(tab + '-tab').style.display = 'block';
+    
+    const headers = document.querySelectorAll('.modal-body .tab-header');
+    headers.forEach(h => h.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function performLogin(event) {
+    event.preventDefault();
+    // Simulate login
+    isLoggedIn = true;
+    userData = {
+        name: 'Devotee User',
+        mobile: '9876543210',
+        email: 'user@example.com'
+    };
+    document.getElementById('userMenu').style.display = 'flex';
+    document.querySelector('.login-btn').style.display = 'none';
+    closeLoginModal();
+    showNotification('✅ Login successful! Welcome back!', 'success');
+    loadUserData();
+}
+
+function performRegister(event) {
+    event.preventDefault();
+    showNotification('✅ Registration successful! Please login.', 'success');
+    showLoginTab('login');
+}
+
+function sendOTP(event) {
+    event.preventDefault();
+    document.getElementById('otpInput').style.display = 'block';
+    showNotification('📱 OTP sent to your mobile number', 'info');
+}
+
+function verifyOTP() {
+    isLoggedIn = true;
+    closeLoginModal();
+    showNotification('✅ OTP verified successfully!', 'success');
+}
+
+function logout() {
+    isLoggedIn = false;
+    userData = null;
+    document.getElementById('userMenu').style.display = 'none';
+    document.querySelector('.login-btn').style.display = 'block';
+    showNotification('👋 Logged out successfully', 'info');
+}
+
+function showProfile() {
+    alert('User Profile:\n' + JSON.stringify(userData, null, 2));
+}
+
+function forgotPassword() {
+    const email = prompt('Enter your registered email:');
+    if (email) {
+        showNotification('📧 Password reset link sent to ' + email, 'info');
+    }
+}
+
+function loadUserData() {
+    // Load user's booking history, preferences, etc.
+    if (isLoggedIn && userData) {
+        // Fetch and display user data
+        console.log('Loading user data for:', userData.name);
+    }
+}
+
+// ========== Payment Integration ==========
+function showDonationModal() {
+    document.getElementById('donationModal').style.display = 'block';
+}
+
+function closeDonationModal() {
+    document.getElementById('donationModal').style.display = 'none';
+}
+
+function updateDonationAmount(category) {
+    const amounts = {
+        annadaan: 501,
+        maintenance: 1001,
+        pooja: 2501,
+        development: 5001,
+        custom: 0
+    };
+    
+    const amountField = document.getElementById('donationAmount');
+    if (category === 'custom') {
+        amountField.readOnly = false;
+        amountField.value = '';
+    } else {
+        amountField.readOnly = true;
+        amountField.value = amounts[category];
+    }
+}
+
+function processDonation(event) {
+    event.preventDefault();
+    const amount = document.getElementById('donationAmount').value;
+    showNotification(`Processing donation of ₹${amount}...`, 'info');
+    // Redirect to payment gateway
+    setTimeout(() => {
+        showNotification('✅ Donation successful! Receipt sent to your email.', 'success');
+        closeDonationModal();
+        updateDonationCounter();
+    }, 2000);
+}
+
+function payWithUPI() {
+    window.open('upi://pay?pa=temple@upi&pn=SmartPilgrim&am=' + document.getElementById('donationAmount').value);
+}
+
+function payWithCard() {
+    // Integrate with payment gateway like Razorpay, PayU, etc.
+    alert('Redirecting to card payment gateway...');
+}
+
+function payWithNetBanking() {
+    alert('Redirecting to net banking...');
+}
+
+function updateDonationCounter() {
+    const counter = document.getElementById('donationAmount');
+    if (counter) {
+        const currentAmount = parseInt(counter.textContent.replace(/,/g, ''));
+        const newAmount = currentAmount + Math.floor(Math.random() * 1000);
+        counter.textContent = newAmount.toLocaleString('en-IN');
+    }
+}
+
+// ========== Live Camera Feed ==========
+function showLiveCam() {
+    document.getElementById('liveCamModal').style.display = 'block';
+}
+
+function closeLiveCam() {
+    document.getElementById('liveCamModal').style.display = 'none';
+}
+
+function switchCamera(camera) {
+    console.log('Switching to camera:', camera);
+    // In production, this would switch actual camera feeds
+}
+
+// ========== Chatbot Functions ==========
+let chatbotOpen = true;
+
+function toggleChatbot() {
+    const chatbot = document.getElementById('chatbot');
+    chatbot.style.display = (chatbot.style.display === 'flex') ? 'none' : 'flex';
+}
+
+
+
+function sendChatMessage(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
+
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    
+    if (message) {
+        addChatMessage(message, 'user');
+        input.value = '';
+        
+        // AI Response (simulated)
+        setTimeout(() => {
+            const response = getChatbotResponse(message);
+            addChatMessage(response, 'bot');
+        }, 1000);
+    }
+}
+
+function addChatMessage(message, sender) {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = sender === 'user' ? 'user-message' : 'bot-message';
+    messageDiv.innerHTML = `<p>${message}</p>`;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function getChatbotResponse(message) {
+    const responses = {
+        'darshan': 'You can book darshan slots through our E-Darshan booking system. Current waiting time is approximately 45 minutes.',
+        'parking': 'Parking Lot A has 150 spots available. Lot B is almost full with only 40 spots.',
+        'timing': 'Temple is open from 5:00 AM to 9:00 PM. Special darshan starts at 4:00 AM on festivals.',
+        'donate': 'You can donate online through UPI, cards, or net banking. Click the Donate Now button.',
+        'emergency': 'For medical emergency call 108. For security issues call 100.',
+        'default': 'I can help you with darshan booking, parking info, temple timings, donations, and emergency services. What would you like to know?'
+    };
+    
+    const lowercaseMsg = message.toLowerCase();
+    for (const key in responses) {
+        if (lowercaseMsg.includes(key)) {
+            return responses[key];
+        }
+    }
+    return responses.default;
+}
+
+// ========== Voice Assistant ==========
+let recognition = null;
+
+function startVoiceAssistant() {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        
+        recognition.lang = currentLanguage === 'en' ? 'en-IN' : currentLanguage + '-IN';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        
+        recognition.onstart = function() {
+            showVoiceIndicator();
+        };
+        
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            processVoiceCommand(transcript);
+            hideVoiceIndicator();
+        };
+        
+        recognition.onerror = function(event) {
+            console.error('Voice recognition error:', event.error);
+            hideVoiceIndicator();
+        };
+        
+        recognition.start();
+    } else {
+        alert('Voice recognition not supported in your browser');
+    }
+}
+
+function processVoiceCommand(command) {
+    console.log('Voice command:', command);
+    speakResponse('Processing your request: ' + command);
+    
+    // Process commands
+    if (command.toLowerCase().includes('book')) {
+        showTab('booking-tab');
+        speakResponse('Opening booking form');
+    } else if (command.toLowerCase().includes('crowd')) {
+        showTab('crowd-tab');
+        speakResponse('Showing crowd information');
+    } else if (command.toLowerCase().includes('emergency')) {
+        showEmergency();
+        speakResponse('Opening emergency assistance');
+    }
+}
+
+function speakResponse(text) {
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = currentLanguage === 'en' ? 'en-IN' : currentLanguage + '-IN';
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+function showVoiceIndicator() {
+    const indicator = document.createElement('div');
+    indicator.className = 'voice-active';
+    indicator.id = 'voiceIndicator';
+    indicator.innerHTML = `
+        <h3>🎤 Listening...</h3>
+        <div class="voice-wave"></div>
+        <p>Speak your command</p>
+    `;
+    document.body.appendChild(indicator);
+}
+
+function hideVoiceIndicator() {
+    const indicator = document.getElementById('voiceIndicator');
+    if (indicator) {
+        indicator.remove();
+    }
+}
+
+// ========== Panic Button with GPS ==========
+function panicButton() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const emergencyData = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+                timestamp: new Date().toISOString(),
+                user: userData ? userData.name : 'Anonymous'
+            };
+            
+            // Send to emergency services
+            console.log('Emergency alert sent:', emergencyData);
+            showNotification('🚨 Emergency alert sent with your location!', 'danger');
+            
+            // Simulate emergency response
+            setTimeout(() => {
+                showNotification('✅ Help is on the way! Medical team dispatched.', 'success');
+            }, 3000);
+        }, error => {
+            console.error('Location error:', error);
+            showNotification('⚠️ Could not get location. Emergency alert sent!', 'warning');
+        });
+    } else {
+        showNotification('⚠️ Location not available. Emergency alert sent!', 'warning');
+    }
+}
+
+// ========== QR Code Scanner ==========
+function openQRScanner() {
+    document.getElementById('qrScanner').style.display = 'block';
+    // Initialize QR scanner library (like Html5QrcodeScanner)
+    // This would require including a QR scanning library
+}
+
+function closeQRScanner() {
+    document.getElementById('qrScanner').style.display = 'none';
+}
+
+// ========== Interactive Map Functions ==========
+function zoomIn() {
+    console.log('Zooming in map');
+    // Implement zoom functionality
+}
+
+function zoomOut() {
+    console.log('Zooming out map');
+    // Implement zoom functionality
+}
+
+function resetView() {
+    console.log('Resetting map view');
+    // Reset map to default view
+}
+
+function switchFloor(floor) {
+    console.log('Switching to floor:', floor);
+    // Load different floor plan
+}
+
+function showZoneDetails(zone) {
+    const zoneInfo = {
+        'entry1': 'Entry Gate 1: Currently low crowd. Best time to enter.',
+        'security': 'Security Check: Moderate crowd. Wait time ~10 minutes.',
+        'queue': 'Main Queue: High density. Consider virtual queue booking.',
+        'sanctum': 'Main Sanctum: Very crowded. Peak darshan time.',
+        'prasad': 'Prasad Counter: Moderate crowd. Prasad available.',
+        'parkingA': 'Parking Lot A: 150 spots available',
+        'parkingB': 'Parking Lot B: Almost full - 40 spots only'
+    };
+    
+    alert(zoneInfo[zone] || 'Zone information');
+}
+
+// ========== Crowd Prediction Chart ==========
+function initCrowdChart() {
+    const canvas = document.getElementById('crowdChart');
+    if (canvas && canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+        
+        // Simple bar chart
+        const hours = ['11AM', '12PM', '1PM', '2PM', '3PM', '4PM'];
+        const crowds = [2500, 3000, 2000, 1500, 2800, 3500];
+        
+        const barWidth = 40;
+        const gap = 10;
+        const maxHeight = 120;
+        
+        ctx.fillStyle = '#003d82';
+        
+        crowds.forEach((crowd, index) => {
+            const barHeight = (crowd / 4000) * maxHeight;
+            const x = index * (barWidth + gap) + 20;
+            const y = maxHeight - barHeight + 10;
+            
+            // Draw bar
+            ctx.fillRect(x, y, barWidth, barHeight);
+            
+            // Draw label
+            ctx.fillStyle = '#666';
+            ctx.font = '10px Arial';
+            ctx.fillText(hours[index], x + 5, maxHeight + 25);
+            ctx.fillText(crowd, x + 5, y - 5);
+            
+            ctx.fillStyle = '#003d82';
+        });
+    }
+}
+
+// ========== Group Booking Functions ==========
+function updateGroupSize(size) {
+    const basePrice = 100; // For special darshan
+    const totalAmount = document.getElementById('totalAmount');
+    if (totalAmount) {
+        totalAmount.textContent = basePrice * size;
+    }
+}
+
+function toggleRecurring(type) {
+    if (type === 'Recurring Weekly' || type === 'Recurring Monthly') {
+        alert('Recurring bookings will be automatically scheduled for the selected time slot');
+    } else if (type === 'Special Occasion') {
+        const occasion = prompt('Please specify the occasion (Birthday, Anniversary, etc.):');
+        if (occasion) {
+            showNotification('Special arrangements will be made for ' + occasion, 'info');
+        }
+    }
+}
+
+// ========== Download Functions ==========
+function downloadTicket() {
+    // Generate PDF ticket
+    const ticketData = {
+        token: 'A-2547',
+        date: '23/09/2025',
+        time: '7:00 AM - 8:00 AM',
+        devotees: 2
+    };
+    
+    // In production, use a PDF library like jsPDF
+    const ticketContent = `
+        SMARTPILGRIM E-TICKET
+        =====================
+        Token: ${ticketData.token}
+        Date: ${ticketData.date}
+        Time: ${ticketData.time}
+        Devotees: ${ticketData.devotees}
+        
+        Please carry this ticket and valid ID proof.
+    `;
+    
+    const blob = new Blob([ticketContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'temple-ticket.txt';
+    a.click();
+}
+
+// ========== Notification System ==========
+function enableNotifications() {
+    if ('Notification' in window) {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                showNotification('🔔 Notifications enabled! You will be alerted 15 minutes before your turn.', 'success');
+                
+                // Schedule notification
+                setTimeout(() => {
+                    new Notification('SmartPilgrim Alert', {
+                        body: 'Your darshan turn is coming up in 15 minutes!',
+                        icon: '/favicon.ico',
+                        badge: '/badge.png'
+                    });
+                }, 30000); // Demo: 30 seconds instead of 15 minutes
+            }
+        });
+    }
+}
+
+// ========== AI Analytics ==========
+function showAIAnalytics() {
+    const analytics = `
+        🤖 AI-Powered Analytics Report
+        ================================
+        
+        Current Patterns:
+        • Peak hours detected: 10-11 AM, 5-7 PM
+        • Average wait time: 45 minutes
+        • Crowd density: 78% of capacity
+        
+        Predictions (Next 6 Hours):
+        • 11 AM - 12 PM: +25% crowd increase
+        • 12 PM - 1 PM: -10% crowd decrease (lunch time)
+        • 1 PM - 2 PM: -30% lowest crowd
+        • 2 PM - 3 PM: +15% gradual increase
+        • 3 PM - 4 PM: +40% afternoon rush
+        • 4 PM - 5 PM: +60% evening peak
+        
+        Recommendations:
+        1. Open Emergency Gate 3 at 11:30 AM
+        2. Deploy 5 additional security personnel
+        3. Activate overflow parking by 3 PM
+        4. Increase prasad counter staff by 2
+        
+        Anomaly Detection:
+        ✓ No unusual patterns detected
+        ✓ All systems functioning normally
+    `;
+    
+    alert(analytics);
+}
+
+// ========== Social Sharing ==========
+function shareExperience(platform) {
+    const message = 'Had a wonderful darshan at the temple through SmartPilgrim system! #SmartPilgrim #DigitalIndia';
+    const url = window.location.href;
+    
+    const shareUrls = {
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+        twitter: `https://twitter.com/intent/tweet?text=${message}&url=${url}`,
+        whatsapp: `https://wa.me/?text=${message} ${url}`,
+        instagram: '#' // Instagram doesn't support direct URL sharing
+    };
+    
+    if (shareUrls[platform]) {
+        window.open(shareUrls[platform], '_blank');
+    }
+}
+
+// ========== Service Worker for Offline Support ==========
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(registration => {
+        console.log('Service Worker registered:', registration.scope);
+        
+        // Check for updates
+        registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    showNotification('📱 New version available! Refresh to update.', 'info');
+                }
+            });
+        });
+    }).catch(error => {
+        console.error('Service Worker registration failed:', error);
+    });
+}
+
+// ========== Initialize Enhanced Features ==========
+function initializeEnhancedFeatures() {
+    // Initialize crowd chart
+    initCrowdChart();
+    
+    // Check for saved language preference
+    const savedLanguage = localStorage.getItem('preferredLanguage');
+    if (savedLanguage) {
+        currentLanguage = savedLanguage;
+        document.getElementById('languageSelector').value = savedLanguage;
+        updatePageLanguage();
+    }
+    
+    // Auto-update donation counter
+    setInterval(updateDonationCounter, 30000);
+    
+    // Initialize push notifications
+    if ('PushManager' in window) {
+        navigator.serviceWorker.ready.then(registration => {
+            registration.pushManager.getSubscription().then(subscription => {
+                if (!subscription) {
+                    // Subscribe to push notifications
+                    console.log('Push notifications available');
+                }
+            });
+        });
+    }
+    
+    // Check online/offline status
+    window.addEventListener('online', () => {
+        const indicator = document.querySelector('.offline-indicator');
+        if (indicator) indicator.remove();
+        showNotification('✅ Back online!', 'success');
+    });
+    
+    window.addEventListener('offline', () => {
+        const indicator = document.createElement('div');
+        indicator.className = 'offline-indicator';
+        indicator.textContent = '⚠️ You are offline - Limited functionality';
+        document.body.appendChild(indicator);
+    });
+    
+    // Initialize geolocation for nearest temple suggestions
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            console.log('User location:', position.coords);
+            // Find nearest temples based on location
+        });
+    }
+}
+
+// ========== Admin Dashboard Functions ==========
+function showAdminDashboard() {
+    if (!isLoggedIn || !userData || userData.role !== 'admin') {
+        showNotification('⚠️ Admin access required', 'warning');
+        return;
+    }
+    
+    // Load admin dashboard with analytics
+    console.log('Loading admin dashboard...');
+}
+
+// ========== Initialize All Features on Load ==========
+window.addEventListener('load', function() {
+    initializeApp();
+    initializeEnhancedFeatures();
+});
+
 // ========== Mobile Menu Functions ==========
 function toggleMobileMenu() {
     const sidebar = document.getElementById('mobileSidebar');
