@@ -20,11 +20,22 @@
                 <a href="#">Skip to Main Content</a>
                 <a href="#">Screen Reader Access</a>
                 <a href="#">Font Size: A- | A | A+</a>
+                <select id="languageSelector" onchange="changeLanguage(this.value)" style="background: transparent; color: white; border: 1px solid white; padding: 2px 5px;">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="gu">ગુજરાતી</option>
+                    <option value="mr">मराठी</option>
+                    <option value="ta">தமிழ்</option>
+                    <option value="te">తెలుగు</option>
+                </select>
             </div>
-            <div>
-                <a href="#">हिंदी</a>
-                <a href="#">ગુજરાતી</a>
-                <a href="#">English</a>
+            <div class="user-section">
+                <button class="login-btn" onclick="showLoginModal()">🔐 Login/Register</button>
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <span class="user-name">Welcome, User</span>
+                    <button onclick="showProfile()">My Profile</button>
+                    <button onclick="logout()">Logout</button>
+                </div>
             </div>
         </div>
     </div>
@@ -43,7 +54,7 @@
             <div style="text-align: right;">
                 <div style="font-size: 0.9rem; color: #666;">Developed by</div>
                 <div style="font-weight: bold;">GUJCOST, Dept. of Science & Technology</div>
-                <div style="font-size: 0.85rem; color: #666;">Last Updated: <span id="lastUpdate">21/09/2025 10:45 AM</span></div>
+                <div style="font-size: 0.85rem; color: #666;">Last Updated: <span id="lastUpdate">22/09/2025 10:45 AM</span></div>
             </div>
         </div>
     </header>
@@ -202,6 +213,7 @@
                                 <small>10:15 AM</small>
                                 <p>Medical team deployed at Queue Area 2</p>
                             </div>
+                            <button class="btn btn-primary btn-small" onclick="showLiveCam()">📹 View Live Camera</button>
                         </div>
                     </div>
                     
@@ -218,6 +230,76 @@
                                 <small style="display: block; margin-top: 10px; color: #666;">
                                     Carry water bottles. Hydration points available.
                                 </small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Crowd Prediction Widget -->
+                    <div class="widget-card">
+                        <div class="widget-header-small">📊 Crowd Forecast (Next 6 Hours)</div>
+                        <div class="widget-content-small">
+                            <canvas id="crowdChart" width="300" height="150"></canvas>
+                            <div style="margin-top: 10px; font-size: 0.85rem;">
+                                <div>🟢 Best Time: 2:00 PM - 3:00 PM</div>
+                                <div>🔴 Peak Expected: 5:00 PM - 7:00 PM</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Festival Calendar Widget -->
+                    <div class="widget-card">
+                        <div class="widget-header-small">🎉 Upcoming Festivals</div>
+                        <div class="widget-content-small">
+                            <div class="festival-list">
+                                <div class="festival-item">
+                                    <span>🕉️ Mahashivratri</span>
+                                    <span>26 Feb 2025</span>
+                                </div>
+                                <div class="festival-item">
+                                    <span>🎨 Holi</span>
+                                    <span>8 Mar 2025</span>
+                                </div>
+                                <div class="festival-item">
+                                    <span>🏹 Ram Navami</span>
+                                    <span>17 Apr 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Donation and Queue Tracker Row -->
+                <div class="tracker-row">
+                    <!-- Queue Token Tracker -->
+                    <div class="widget-card">
+                        <div class="widget-header-small">🎫 Your Queue Status</div>
+                        <div class="widget-content-small">
+                            <div id="queueTracker">
+                                <div class="queue-status">
+                                    <h3>Token: A-2015</h3>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 60%;"></div>
+                                    </div>
+                                    <p>Estimated Time: <strong>45 minutes</strong></p>
+                                    <p>Tokens Ahead: <strong>168</strong></p>
+                                    <button class="btn btn-success btn-small" onclick="enableNotifications()">🔔 Enable Notifications</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Donation Counter -->
+                    <div class="widget-card">
+                        <div class="widget-header-small">💰 Today's Donations</div>
+                        <div class="widget-content-small">
+                            <div style="text-align: center;">
+                                <div class="donation-counter" style="font-size: 2rem; font-weight: bold; color: var(--gov-green);">
+                                    ₹ <span id="donationAmount">12,45,678</span>
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    <small>Total Devotees Donated: 3,456</small>
+                                </div>
+                                <button class="btn btn-warning btn-small" onclick="showDonationModal()">🙏 Donate Now</button>
                             </div>
                         </div>
                     </div>
@@ -263,6 +345,17 @@
                                                 <option>Divyang (Free)</option>
                                             </select>
                                         </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Booking Type</label>
+                                            <select class="form-control" onchange="toggleRecurring(this.value)">
+                                                <option>Single Visit</option>
+                                                <option>Group Booking (Up to 20)</option>
+                                                <option>Recurring Weekly</option>
+                                                <option>Recurring Monthly</option>
+                                                <option>Special Occasion</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     
                                     <div class="form-row">
@@ -288,6 +381,16 @@
                                                 <option>07:00 PM - 08:00 PM (Available: 200)</option>
                                             </select>
                                         </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Prasad Pre-Order</label>
+                                            <select class="form-control">
+                                                <option>No Prasad</option>
+                                                <option>Regular Prasad (₹51)</option>
+                                                <option>Special Prasad (₹101)</option>
+                                                <option>Premium Prasad (₹251)</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     
                                     <div class="form-row">
@@ -310,7 +413,7 @@
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label>Number of Devotees <span class="required">*</span></label>
-                                            <input type="number" min="1" max="10" value="1" class="form-control" required>
+                                            <input type="number" min="1" max="20" value="1" class="form-control" required onchange="updateGroupSize(this.value)">
                                         </div>
                                         
                                         <div class="form-group">
@@ -331,10 +434,25 @@
                                         </div>
                                     </div>
                                     
-                                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                                    <!-- Payment Section -->
+                                    <div class="payment-section">
+                                        <h4>Payment Method</h4>
+                                        <div class="payment-options">
+                                            <label><input type="radio" name="payment" value="upi" checked> UPI (GPay/PhonePe/Paytm)</label>
+                                            <label><input type="radio" name="payment" value="card"> Credit/Debit Card</label>
+                                            <label><input type="radio" name="payment" value="netbanking"> Net Banking</label>
+                                            <label><input type="radio" name="payment" value="wallet"> Digital Wallet</label>
+                                        </div>
+                                        <div class="total-amount">
+                                            <strong>Total Amount: ₹ <span id="totalAmount">0</span></strong>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
                                         <button type="submit" class="btn btn-primary">Submit Booking</button>
                                         <button type="reset" class="btn btn-warning">Reset Form</button>
                                         <button type="button" class="btn btn-success" onclick="checkStatus()">Check Booking Status</button>
+                                        <button type="button" class="btn btn-info" onclick="downloadTicket()">📥 Download Previous Ticket</button>
                                     </div>
                                 </form>
                             </div>
@@ -351,63 +469,80 @@
                                     </div>
                                 </div>
                                 
+                                <!-- Interactive Temple Map -->
+                                <div class="temple-map-container">
+                                    <div class="map-controls">
+                                        <button onclick="zoomIn()">➕ Zoom In</button>
+                                        <button onclick="zoomOut()">➖ Zoom Out</button>
+                                        <button onclick="resetView()">🔄 Reset</button>
+                                        <select onchange="switchFloor(this.value)">
+                                            <option>Ground Floor</option>
+                                            <option>First Floor</option>
+                                            <option>Basement</option>
+                                        </select>
+                                    </div>
+                                    <div id="interactiveMap" class="interactive-map">
+                                        <!-- SVG or Canvas for interactive map will be rendered here -->
+                                    </div>
+                                </div>
+                                
                                 <div class="map-grid">
-                                    <div class="zone-block zone-green">
+                                    <div class="zone-block zone-green" onclick="showZoneDetails('entry1')">
                                         <strong>Entry Gate 1</strong>
                                         <div>~250 people</div>
                                         <small>Low Density</small>
                                     </div>
-                                    <div class="zone-block zone-yellow">
+                                    <div class="zone-block zone-yellow" onclick="showZoneDetails('security')">
                                         <strong>Security Check</strong>
                                         <div>~800 people</div>
                                         <small>Moderate</small>
                                     </div>
-                                    <div class="zone-block zone-red">
+                                    <div class="zone-block zone-red" onclick="showZoneDetails('queue')">
                                         <strong>Main Queue</strong>
                                         <div>~2500 people</div>
                                         <small>High Density</small>
                                     </div>
-                                    <div class="zone-block zone-orange">
+                                    <div class="zone-block zone-orange" onclick="showZoneDetails('sanctum_entry')">
                                         <strong>Sanctum Entry</strong>
                                         <div>~1500 people</div>
                                         <small>Moderate-High</small>
                                     </div>
-                                    <div class="zone-block zone-red">
+                                    <div class="zone-block zone-red" onclick="showZoneDetails('sanctum')">
                                         <strong>Main Sanctum</strong>
                                         <div>~3000 people</div>
                                         <small>Very High</small>
                                     </div>
-                                    <div class="zone-block zone-yellow">
+                                    <div class="zone-block zone-yellow" onclick="showZoneDetails('prasad')">
                                         <strong>Prasad Counter</strong>
                                         <div>~600 people</div>
                                         <small>Moderate</small>
                                     </div>
-                                    <div class="zone-block zone-green">
+                                    <div class="zone-block zone-green" onclick="showZoneDetails('exit1')">
                                         <strong>Exit Gate 1</strong>
                                         <div>~200 people</div>
                                         <small>Low Density</small>
                                     </div>
-                                    <div class="zone-block zone-green">
+                                    <div class="zone-block zone-green" onclick="showZoneDetails('exit2')">
                                         <strong>Exit Gate 2</strong>
                                         <div>~150 people</div>
                                         <small>Low Density</small>
                                     </div>
-                                    <div class="zone-block zone-orange">
+                                    <div class="zone-block zone-orange" onclick="showZoneDetails('parkingA')">
                                         <strong>Parking Lot A</strong>
                                         <div>85% Full</div>
                                         <small>Limited Space</small>
                                     </div>
-                                    <div class="zone-block zone-red">
+                                    <div class="zone-block zone-red" onclick="showZoneDetails('parkingB')">
                                         <strong>Parking Lot B</strong>
                                         <div>95% Full</div>
                                         <small>Almost Full</small>
                                     </div>
-                                    <div class="zone-block zone-yellow">
+                                    <div class="zone-block zone-yellow" onclick="showZoneDetails('foodcourt')">
                                         <strong>Food Court</strong>
                                         <div>~400 people</div>
                                         <small>Moderate</small>
                                     </div>
-                                    <div class="zone-block zone-green">
+                                    <div class="zone-block zone-green" onclick="showZoneDetails('restarea')">
                                         <strong>Rest Area</strong>
                                         <div>~100 people</div>
                                         <small>Low Density</small>
@@ -415,13 +550,14 @@
                                 </div>
                                 
                                 <div style="background: #f5f5f5; padding: 15px; margin-top: 20px; border: 1px solid var(--gov-border);">
-                                    <strong>AI Predictions for Next 2 Hours:</strong>
+                                    <strong>🤖 AI Predictions for Next 2 Hours:</strong>
                                     <ul style="margin: 10px 0 0 20px;">
                                         <li>Expected 25% increase in crowd by 12:00 PM</li>
                                         <li>Parking Lot B likely to be full in 30 minutes</li>
                                         <li>Recommended to open Emergency Gate 3 by 11:30 AM</li>
                                         <li>Deploy additional security at Main Queue area</li>
                                     </ul>
+                                    <button class="btn btn-primary btn-small" onclick="showAIAnalytics()">View Detailed AI Analytics</button>
                                 </div>
                             </div>
                         </div>
@@ -744,6 +880,8 @@
                     <strong>For immediate emergency, call 108 (Medical) or 100 (Police)</strong>
                 </div>
                 
+                <button class="panic-btn" onclick="panicButton()">🆘 PANIC BUTTON - Send Location</button>
+                
                 <h4>Report Emergency:</h4>
                 <form>
                     <div class="form-group" style="margin-bottom: 15px;">
@@ -788,13 +926,240 @@
         </div>
     </div>
 
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🔐 Login / Register</h3>
+                <span class="modal-close" onclick="closeLoginModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="tab-headers">
+                    <button class="tab-header active" onclick="showLoginTab('login')">Login</button>
+                    <button class="tab-header" onclick="showLoginTab('register')">Register</button>
+                    <button class="tab-header" onclick="showLoginTab('otp')">Login with OTP</button>
+                </div>
+                
+                <div id="login-tab" class="login-tab active">
+                    <form onsubmit="performLogin(event)">
+                        <div class="form-group">
+                            <label>Mobile Number / Email</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox"> Remember me</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <a href="#" onclick="forgotPassword()">Forgot Password?</a>
+                    </form>
+                </div>
+                
+                <div id="register-tab" class="login-tab" style="display: none;">
+                    <form onsubmit="performRegister(event)">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number</label>
+                            <input type="tel" class="form-control" pattern="[0-9]{10}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Aadhaar Number (Optional)</label>
+                            <input type="text" class="form-control" pattern="[0-9]{12}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+                
+                <div id="otp-tab" class="login-tab" style="display: none;">
+                    <form onsubmit="sendOTP(event)">
+                        <div class="form-group">
+                            <label>Mobile Number</label>
+                            <input type="tel" class="form-control" pattern="[0-9]{10}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send OTP</button>
+                        <div class="form-group" id="otpInput" style="display: none; margin-top: 15px;">
+                            <label>Enter OTP</label>
+                            <input type="text" class="form-control" pattern="[0-9]{6}">
+                            <button type="button" class="btn btn-success" onclick="verifyOTP()">Verify OTP</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Donation Modal -->
+    <div id="donationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🙏 Online Donation</h3>
+                <span class="modal-close" onclick="closeDonationModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="processDonation(event)">
+                    <div class="form-group">
+                        <label>Donation Category</label>
+                        <select class="form-control" onchange="updateDonationAmount(this.value)">
+                            <option value="annadaan">Annadaan (₹501)</option>
+                            <option value="maintenance">Temple Maintenance (₹1001)</option>
+                            <option value="pooja">Special Pooja (₹2501)</option>
+                            <option value="development">Temple Development (₹5001)</option>
+                            <option value="custom">Custom Amount</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Amount (₹)</label>
+                        <input type="number" id="donationAmount" class="form-control" value="501" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Donor Name</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="tel" class="form-control" pattern="[0-9]{10}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>PAN Number (For 80G Certificate)</label>
+                        <input type="text" class="form-control" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+                    </div>
+                    
+                    <div class="payment-options">
+                        <h4>Select Payment Method:</h4>
+                        <div class="payment-grid">
+                            <button type="button" class="payment-btn" onclick="payWithUPI()">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23008000'/%3E%3Ctext x='50' y='50' text-anchor='middle' fill='white' font-size='20'%3EUPI%3C/text%3E%3C/svg%3E" alt="UPI">
+                                UPI Payment
+                            </button>
+                            <button type="button" class="payment-btn" onclick="payWithCard()">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%234169E1'/%3E%3Ctext x='50' y='50' text-anchor='middle' fill='white' font-size='20'%3ECARD%3C/text%3E%3C/svg%3E" alt="Card">
+                                Card Payment
+                            </button>
+                            <button type="button" class="payment-btn" onclick="payWithNetBanking()">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23FF6347'/%3E%3Ctext x='50' y='50' text-anchor='middle' fill='white' font-size='20'%3EBANK%3C/text%3E%3C/svg%3E" alt="Bank">
+                                Net Banking
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">Proceed to Pay</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Camera Modal -->
+    <div id="liveCamModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>📹 Live Camera Feed</h3>
+                <span class="modal-close" onclick="closeLiveCam()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <select onchange="switchCamera(this.value)">
+                    <option>Main Entrance</option>
+                    <option>Queue Area</option>
+                    <option>Sanctum Exterior</option>
+                    <option>Parking Lot A</option>
+                    <option>Parking Lot B</option>
+                    <option>Food Court</option>
+                </select>
+                <div class="video-container" style="margin-top: 15px;">
+                    <video id="liveFeed" width="100%" height="400" controls autoplay>
+                        <source src="live-feed.mp4" type="video/mp4">
+                        Your browser does not support video.
+                    </video>
+                </div>
+                <div style="margin-top: 10px;">
+                    <small>🔴 Live | Viewers: 234 | Camera: CAM-001</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Floating Chatbot Icon -->
+    <div id="chatbotIcon" class="chatbot-icon" onclick="toggleChatbot()">
+        💬
+    </div>
+
+    <!-- Floating Chatbot Window -->
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-header">
+            <span>🤖 Temple Assistant</span>
+        </div>
+        <div class="chatbot-body">
+            <div class="chatbot-messages" id="chatMessages">
+                <div class="bot-message">
+                    <p>Namaste! 🙏 I'm your temple assistant. How can I help you today?</p>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="sendChatMessage(event)">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- QR Scanner (for mobile) -->
+    <div id="qrScanner" style="display: none;">
+        <div class="scanner-container">
+            <h3>Scan QR Code for Entry</h3>
+            <div id="qrReader"></div>
+            <button onclick="closeQRScanner()">Close Scanner</button>
+        </div>
+    </div>
+
     <!-- Accessibility Button -->
     <button class="accessibility-btn" onclick="toggleAccessibility()" title="Accessibility Options">♿</button>
 
+    <!-- Voice Assistant Button -->
+    <button class="voice-btn" onclick="startVoiceAssistant()" title="Voice Assistant">🎤</button>
+
     <!-- Include JavaScript -->
     <script src="script.js"></script>
+    
+    <!-- Service Worker Registration with Error Handling -->
+    <script>
+        // Only register service worker if running on a proper web server
+        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
+            // Check if we're on a real domain (not claudeusercontent or local preview)
+            if (!window.location.hostname.includes('claudeusercontent') && 
+                !window.location.hostname.includes('localhost') &&
+                !window.location.hostname.includes('127.0.0.1')) {
+                
+                navigator.serviceWorker.register('sw.js').then(function(registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }).catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                    // Silently fail - the app will work without offline support
+                });
+            } else {
+                console.log('Service Worker not registered - running in development/preview mode');
+            }
+        } else {
+            console.log('Service Worker not supported or not on HTTPS');
+        }
+    </script>
 </body>
 </html>
-
-
-
